@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" type="image/png" href="/images/logo.png">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <img src="/images/logo.png" alt="Nayaka Tour" class="h-9 w-auto object-contain" style="margin-bottom: 2rem; display: block;">
+      <nav>
+      <nav>
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/destinations">Manage Destinations</a>
+        <a href="/admin/trips" class="active">Manage Trips</a>
+        <a href="/admin/bookings">Manage Bookings</a>
+        <a href="/" style="margin-top: 2rem; color: #94a3b8;">&larr; Back to Site</a>
+        <a href="/auth/logout" style="color: #ef4444;">Logout</a>
+      </nav>
+    </aside>
+    <main class="admin-content">
+      <h1 style="margin-bottom: 2rem;">Manage Trips</h1>
+      
+      <div class="card" style="padding: 2rem; margin-bottom: 2rem;">
+        <h3 style="margin-bottom: 1.5rem;">Add New Trip</h3>
+        <form action="/admin/trips" method="POST">
+          <div class="form-group">
+            <label class="form-label">Title</label>
+            <input type="text" name="title" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0;">
+            <div class="form-group">
+              <label class="form-label">Price (IDR)</label>
+              <input type="number" name="price" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Capacity (Pax)</label>
+              <input type="number" name="capacity" class="form-control" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Destination (Optional)</label>
+            <select name="destinationId" class="form-control">
+              <option value="">None</option>
+              <% destinations.forEach(dest => { %>
+                <option value="<%= dest.id %>"><%= dest.title %></option>
+              <% }) %>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Add Trip</button>
+        </form>
+      </div>
+
+      <div class="card" style="padding: 2rem;">
+        <h3 style="margin-bottom: 1.5rem;">Existing Trips</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Destination</th>
+                <th>Price</th>
+                <th>Capacity</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% trips.forEach(trip => { %>
+                <tr>
+                  <td><%= trip.title %></td>
+                  <td><%= trip.destination ? trip.destination.title : '-' %></td>
+                  <td>Rp <%= trip.price.toLocaleString('id-ID') %></td>
+                  <td><%= trip.capacity %> pax</td>
+                  <td>
+                    <form action="/admin/trips/<%= trip.id %>/delete" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure?')">
+                      <button type="submit" class="btn btn-danger" style="padding: 0.4rem 0.8rem; font-size: 0.875rem;">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

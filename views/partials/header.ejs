@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : 'Nayaka Tour' %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="/" class="brand" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--dark);">
+      <i class="fa-solid fa-plane-departure" style="color: #f59e0b;"></i> Nayaka<span style="color: #f59e0b;">Tour.</span>
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <% if (user) { %>
+        <% if (user.role === 'ADMIN') { %>
+          <a href="/admin/dashboard">Admin Dashboard</a>
+        <% } %>
+        <a href="/auth/logout" class="btn btn-outline" style="padding: 0.4rem 1rem;">Logout</a>
+      <% } else { %>
+        <a href="/auth/login" class="btn btn-primary" style="padding: 0.4rem 1rem;">Login</a>
+      <% } %>
+    </div>
+  </div>
+</nav>

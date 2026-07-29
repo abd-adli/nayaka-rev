@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <h2 style="margin-bottom: 2rem; color: var(--primary);">Nayaka Admin</h2>
+      <nav>
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/destinations">Manage Destinations</a>
+        <a href="/admin/trips">Manage Trips</a>
+        <a href="/admin/bookings" class="active">Manage Bookings</a>
+        <a href="/" style="margin-top: 2rem; color: #94a3b8;">&larr; Back to Site</a>
+        <a href="/auth/logout" style="color: #ef4444;">Logout</a>
+      </nav>
+    </aside>
+    <main class="admin-content">
+      <h1 style="margin-bottom: 2rem;">Manage Bookings</h1>
+
+      <div class="card" style="padding: 2rem;">
+        <h3 style="margin-bottom: 1.5rem;">Daftar Pesanan</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Pemesan</th>
+                <th>Trip & Tanggal</th>
+                <th>Total Tagihan</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (bookings && bookings.length > 0) { %>
+                <% bookings.forEach(booking => { %>
+                  <tr>
+                    <td>#BKG-<%= booking.id %></td>
+                    <td>
+                      <strong><%= booking.customerName %></strong><br>
+                      <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-brands fa-whatsapp text-green-500"></i> <%= booking.phone %></span><br>
+                      <span style="font-size: 0.85rem; color: var(--text-muted);"><%= booking.customerEmail %></span>
+                    </td>
+                    <td>
+                      <%= booking.trip.title %><br>
+                      <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-regular fa-calendar"></i> <%= new Date(booking.bookingDate).toLocaleDateString('id-ID') %></span><br>
+                      <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-solid fa-users"></i> <%= booking.totalTickets %> Pax</span>
+                    </td>
+                    <td><strong style="color: var(--primary);">Rp <%= booking.totalPrice.toLocaleString('id-ID') %></strong></td>
+                    <td>
+                      <% if (booking.status === 'PENDING') { %>
+                        <span style="background: #fef3c7; color: #d97706; padding: 0.2rem 0.6rem; border-radius: 99px; font-size: 0.8rem; font-weight: 600;">PENDING</span>
+                      <% } else if (booking.status === 'CONFIRMED') { %>
+                        <span style="background: #d1fae5; color: #059669; padding: 0.2rem 0.6rem; border-radius: 99px; font-size: 0.8rem; font-weight: 600;">CONFIRMED</span>
+                      <% } else { %>
+                        <span style="background: #fee2e2; color: #dc2626; padding: 0.2rem 0.6rem; border-radius: 99px; font-size: 0.8rem; font-weight: 600;">CANCELLED</span>
+                      <% } %>
+                    </td>
+                    <td>
+                      <form action="/admin/bookings/<%= booking.id %>/status" method="POST" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <select name="status" class="form-control" style="padding: 0.4rem; font-size: 0.875rem; width: auto;" onchange="this.form.submit()">
+                          <option value="PENDING" <%= booking.status === 'PENDING' ? 'selected' : '' %>>Pending</option>
+                          <option value="CONFIRMED" <%= booking.status === 'CONFIRMED' ? 'selected' : '' %>>Confirm</option>
+                          <option value="CANCELLED" <%= booking.status === 'CANCELLED' ? 'selected' : '' %>>Cancel</option>
+                        </select>
+                      </form>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">Belum ada data pesanan.</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

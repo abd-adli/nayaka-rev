@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  role      Role      @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[]
+}
+
+model Destination {
+  id         Int      @id @default(autoincrement())
+  title      String
+  slug       String   @unique
+  thumbnail  String?
+  summary    String?
+  content    String?  @db.Text
+  isFeatured Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  trips      Trip[]
+}
+
+model Trip {
+  id            Int          @id @default(autoincrement())
+  title         String
+  description   String?      @db.Text
+  price         Float
+  capacity      Int
+  destinationId Int?
+  destination   Destination? @relation(fields: [destinationId], references: [id], onDelete: SetNull)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  bookings      Booking[]
+}
+
+model Booking {
+  id           Int           @id @default(autoincrement())
+  userId       Int?
+  user         User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  tripId       Int
+  trip         Trip          @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  customerName String
+  customerEmail String
+  phone        String
+  bookingDate  DateTime
+  totalTickets Int
+  totalPrice   Float
+  status       BookingStatus @default(PENDING)
+  createdAt    DateTime      @default(now())
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" type="image/png" href="/images/logo.png">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <img src="/images/logo.png" alt="Nayaka Tour" class="h-9 w-auto object-contain" style="margin-bottom: 2rem; display: block;">
+      <nav>
+        <a href="/admin/dashboard" class="active">Dashboard</a>
+        <a href="/admin/destinations">Manage Destinations</a>
+        <a href="/admin/trips">Manage Trips</a>
+        <a href="/admin/bookings">Manage Bookings</a>
+        <a href="/" style="margin-top: 2rem; color: #94a3b8;">&larr; Back to Site</a>
+        <a href="/auth/logout" style="color: #ef4444;">Logout</a>
+      </nav>
+    </aside>
+    <main class="admin-content">
+      <h1 style="margin-bottom: 2rem;">Overview</h1>
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div class="card" style="padding: 2rem; text-align: center;">
+          <h3 style="color: var(--text-muted); font-size: 1rem; text-transform: uppercase;">Total Destinations</h3>
+          <p style="font-size: 3rem; font-weight: 800; color: var(--primary);"><%= totalDestinations %></p>
+        </div>
+        <div class="card" style="padding: 2rem; text-align: center;">
+          <h3 style="color: var(--text-muted); font-size: 1rem; text-transform: uppercase;">Total Trips</h3>
+          <p style="font-size: 3rem; font-weight: 800; color: var(--secondary);"><%= totalTrips %></p>
+        </div>
+        <div class="card" style="padding: 2rem; text-align: center;">
+          <h3 style="color: var(--text-muted); font-size: 1rem; text-transform: uppercase;">Total Bookings</h3>
+          <p style="font-size: 3rem; font-weight: 800; color: #10b981;"><%= totalBookings %></p>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

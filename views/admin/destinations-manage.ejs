@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" type="image/png" href="/images/logo.png">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <img src="/images/logo.png" alt="Nayaka Tour" class="h-9 w-auto object-contain" style="margin-bottom: 2rem; display: block;">
+      <nav>
+      <nav>
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/destinations" class="active">Manage Destinations</a>
+        <a href="/admin/trips">Manage Trips</a>
+        <a href="/admin/bookings">Manage Bookings</a>
+        <a href="/" style="margin-top: 2rem; color: #94a3b8;">&larr; Back to Site</a>
+        <a href="/auth/logout" style="color: #ef4444;">Logout</a>
+      </nav>
+    </aside>
+    <main class="admin-content">
+      <h1 style="margin-bottom: 2rem;">Manage Destinations</h1>
+      
+      <div class="card" style="padding: 2rem; margin-bottom: 2rem;">
+        <h3 style="margin-bottom: 1.5rem;">Add New Destination</h3>
+        <form action="/admin/destinations" method="POST">
+          <div class="form-group">
+            <label class="form-label">Title</label>
+            <input type="text" name="title" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Thumbnail URL</label>
+            <input type="url" name="thumbnail" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Summary</label>
+            <textarea name="summary" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Content (HTML allowed)</label>
+            <textarea name="content" class="form-control" rows="6"></textarea>
+          </div>
+          <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+            <input type="checkbox" id="isFeatured" name="isFeatured">
+            <label for="isFeatured" style="margin: 0; font-weight: 500;">Is Featured on Homepage?</label>
+          </div>
+          <button type="submit" class="btn btn-primary">Add Destination</button>
+        </form>
+      </div>
+
+      <div class="card" style="padding: 2rem;">
+        <h3 style="margin-bottom: 1.5rem;">Existing Destinations</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Slug</th>
+                <th>Featured</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% destinations.forEach(dest => { %>
+                <tr>
+                  <td><%= dest.title %></td>
+                  <td><%= dest.slug %></td>
+                  <td><%= dest.isFeatured ? 'Yes' : 'No' %></td>
+                  <td>
+                    <form action="/admin/destinations/<%= dest.id %>/delete" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure?')">
+                      <button type="submit" class="btn btn-danger" style="padding: 0.4rem 0.8rem; font-size: 0.875rem;">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
