@@ -2,16 +2,21 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const ejs = require('ejs');
 
 const publicRoutes = require('./routes/publicRoutes');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 
+// 1. Inisialisasi app DULUAN
 const app = express();
 
-// View engine setup
+// 2. Baru set engine-nya
+app.engine('ejs', ejs.__express);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+
 
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
@@ -47,8 +52,6 @@ app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+
 
 module.exports = app;
